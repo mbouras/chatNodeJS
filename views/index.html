@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Node avec Socket.io</title>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Page Socket.io avec NodeJS</h1>
+    <input type="text" placeholder"write here"/>
+    <button>Send</button>
+    <ul></ul>
+    <script>
+        //on instancie dans le client, vu qu'on a deja la "parabole" sur server
+        var socket = io();
+
+        //Send Message
+        function send(){
+            var _v = $('input').val();
+            socket.emit('send', _v);
+            $('input').val('');
+        }
+
+        $(function() {
+            $('button').click(send);
+        });
+
+        document.addEventListener('keyup', function(ev){
+            if(ev.keyCode === 13) send();
+        });
+
+        //Receive message
+        socket.on('receive', function(msg){
+            $('ul').prepend('<li>'+msg+'</li>');
+        });
+    </script>
+</body>
+</html>
